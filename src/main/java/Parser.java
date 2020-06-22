@@ -106,12 +106,19 @@ public class Parser {
         //Ввод значений переменных
         while (variables.size() > 0){
             String str = scanner.nextLine().replace(" ", "");
+            String[] line = str.split("=");
+
+            try {
+                Integer.parseInt(line[1]);
+            } catch (NumberFormatException ex) {
+                System.out.println("Слишком большое число");
+                continue;
+            }
 
             if (!str.matches("\\w+=\\d+")) {
                 System.out.println("Не корректный ввод");
                 continue;
             }
-            String[] line = str.split("=");
             if (variables.contains(line[0])) {
                 expression = expression.replaceAll(line[0], line[1]);
                 variables.remove(line[0]);
@@ -150,8 +157,9 @@ public class Parser {
         return new Tree((BinaryNode) stack.pop());
     }
 
-    public static boolean checkExpression (String expression){
-        Pattern illegalSigns = Pattern.compile("[^\\w()+-/*]|[.,]|([a-z]*[\\d]+[a-z]+)|([\\d]+[a-z]+)|(\\w\\()|(\\)\\w)");
+    public static boolean checkExpression (String expression) {
+        Pattern illegalSigns = Pattern.compile("[^\\w()+-/*]|[.,]|([a-z]*[\\d]+[a-z]+)|([\\d]+[a-z]+)" +
+                "|(\\w\\()|(\\)\\w)|^[+-/*]|[+-/*]$");
         Matcher matcher = illegalSigns.matcher(expression);
 
         if (matcher.find()) {
@@ -172,6 +180,17 @@ public class Parser {
 
         String[] noOperators = expression.replaceAll("[()]|[+-/*]{2}+", "").split("[+-/*]");
         String[] noNumbers = expression.replaceAll("[()\\w]", "").split("");
+
+        for (String str: noOperators) {
+            if(str.matches("\\d+")) {
+                try {
+                    Integer.parseInt(str);
+                } catch (NumberFormatException ex) {
+                    System.out.println("Слишком большое число " + str);
+                    return false;
+                }
+            }
+        }
 
         if (noOperators.length - noNumbers.length != 1 | noNumbers[0].equals("")) {
             System.out.println("В выражении неверное число операций");
