@@ -28,14 +28,11 @@ public class Parser {
             throw new IllegalArgumentException("Invalid token: " + token);
         }
 
-        if (OPERATORS.get(token)[1] == type) {
-            return true;
-        }
-        return false;
+        return OPERATORS.get(token)[1] == type;
     }
 
     // Сравниваем порядок операторов
-    private static final int cmpPrecedence(String token1, String token2)
+    private static int cmpPrecedence(String token1, String token2)
     {
         if (!isOperator(token1) || !isOperator(token2))
         {
@@ -103,9 +100,18 @@ public class Parser {
         while (matcher.find()) {
             variables.add(matcher.group());
         }
+        if (variables.size() > 0) {
+            System.out.println("Какие значения у переменных?");
+        }
         //Ввод значений переменных
         while (variables.size() > 0){
-            String[] line = scanner.nextLine().replace(" ", "").split("=");
+            String str = scanner.nextLine().replace(" ", "");
+
+            if (!str.matches("\\w+=\\d")) {
+                System.out.println("Не корректный ввод");
+                continue;
+            }
+            String[] line = str.split("=");
             if (variables.contains(line[0])) {
                 expression = expression.replaceAll(line[0], line[1]);
                 variables.remove(line[0]);
@@ -145,7 +151,7 @@ public class Parser {
     }
 
     public static boolean checkExpression (String expression){
-        Pattern illegalSigns = Pattern.compile("[^\\w()+-\\/*]|[.,]|([a-z]*[\\d]+[a-z]+)|([\\d]+[a-z]+)");
+        Pattern illegalSigns = Pattern.compile("[^\\w()+-/*]|[.,]|([a-z]*[\\d]+[a-z]+)|([\\d]+[a-z]+)|(\\w\\()|(\\)\\w)");
         Matcher matcher = illegalSigns.matcher(expression);
 
         if (matcher.find()) {
@@ -164,15 +170,14 @@ public class Parser {
             return false;
         }
 
-        String[] noOperators = expression.replaceAll("[()]", "").split("[+-\\/*]");
+        String[] noOperators = expression.replaceAll("[()]|[+-/*]{2}+", "").split("[+-/*]");
         String[] noNumbers = expression.replaceAll("[()\\w]", "").split("");
 
-        if (noOperators.length - noNumbers.length != 1) {
+        if (noOperators.length - noNumbers.length != 1 | noNumbers[0].equals("")) {
             System.out.println("В выражении неверное число операций");
             return false;
         }
 
-        System.out.println("Какие значения у переменных?");
         return true;
     }
 }
