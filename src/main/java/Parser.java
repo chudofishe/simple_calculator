@@ -167,7 +167,7 @@ public class Parser {
         String[] noOperators = expression.replaceAll("[()+-\\/*]", "").split("");
         String[] noNumbers = expression.replaceAll("[()\\w]", "").split("");
 
-        if (noOperators.length - noNumbers.length != 1) {
+        if (noOperators.length - noNumbers.length != 1 | noNumbers[0].equals("")) {
             System.out.println("В выражении неверное число операций");
             return false;
         }
