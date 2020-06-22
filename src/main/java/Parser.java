@@ -164,7 +164,7 @@ public class Parser {
             return false;
         }
 
-        String[] noOperators = expression.replaceAll("[()]", "").split("[+-\\/*]");
+        String[] noOperators = expression.replaceAll("[()+-\\/*]", "").split("");
         String[] noNumbers = expression.replaceAll("[()\\w]", "").split("");
 
         if (noOperators.length - noNumbers.length != 1) {
