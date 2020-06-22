@@ -2,7 +2,7 @@
 
 Запуск:
 1) clone
-gradlew (если не установлен gradle)
+2) gradlew (если не установлен gradle)
 3) gradle(w) build
 4) gradle(w) jar
 5) java -jar build/libs/calculator_final-1.0-SNAPSHOT.jar
