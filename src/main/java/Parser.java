@@ -107,7 +107,7 @@ public class Parser {
         while (variables.size() > 0){
             String str = scanner.nextLine().replace(" ", "");
 
-            if (!str.matches("\\w+=\\d")) {
+            if (!str.matches("\\w+=\\d+")) {
                 System.out.println("Не корректный ввод");
                 continue;
             }
