@@ -2,9 +2,10 @@
 
 Запуск:
 1) clone
-2) gradle build
-3) gradle jar
-4) java -jar build/libs/calculator_final-1.0-SNAPSHOT.jar
+2) gradlew
+3) gradle build
+4) gradle jar
+5) java -jar build/libs/calculator_final-1.0-SNAPSHOT.jar
 
 Инпут: алгебраическое выражение в формате (12 + х) * 23 + y
 
